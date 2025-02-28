@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AddressCard from "../components/auth/AddressCard";
 import Nav from "../components/auth/nav";
-
 export default function Profile() {
 	const [personalDetails, setPersonalDetails] = useState({
 		name: "",
@@ -11,10 +11,11 @@ export default function Profile() {
 	});
 
 	const [addresses, setAddresses] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetch(
-			`http://localhost:8000/api/v2/user/profile?email=${"yash@gmail.com"}`,
+			`http://localhost:8000/api/v2/user/profile?email=${"Pranav@gmail.com"}`,
 			{
 				method: "GET",
 				headers: {
@@ -30,11 +31,18 @@ export default function Profile() {
 			})
 			.then((data) => {
 				setPersonalDetails(data.user);
-				setAddresses(data.addresses);
+setAddresses(data.addresses);
+// console.log("Avatar URL fetched:", data.user.avatarUrl);
+
 				console.log("User fetched:", data.user);
 				console.log("Addresses fetched:", data.addresses);
 			});
 	}, []);
+
+	const handleAddAddress = () => {
+		navigate("/create-address");
+	};
+
 	return (
 		<>
 			<Nav />
@@ -46,6 +54,8 @@ export default function Profile() {
 								Personal Details
 							</h1>
 						</div>
+
+						
 						<div className="w-full h-max flex flex-col sm:flex-row p-5 gap-10">
 							<div className="w-40 h-max flex flex-col justify-center items-center gap-y-3">
 								<div className="w-full h-max text-2xl text-neutral-100 text-left">
@@ -98,7 +108,10 @@ export default function Profile() {
 							</h1>
 						</div>
 						<div className="w-full h-max p-5">
-							<button className="w-max px-3 py-2 bg-neutral-600 text-neutral-100 rounded-md text-center hover:bg-neutral-100 hover:text-black transition-all duration-100">
+							<button
+								className="w-max px-3 py-2 bg-neutral-600 text-neutral-100 rounded-md text-center hover:bg-neutral-100 hover:text-black transition-all duration-100"
+								onClick={handleAddAddress}
+							>
 								Add Address
 							</button>
 						</div>
